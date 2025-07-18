@@ -1,0 +1,161 @@
+/* src/styles/Navbar.css */
+
+/* --- Main Navbar Container --- */
+.navbar {
+  /* Use a linear gradient for the purple-black hue */
+  background: linear-gradient(
+    to right,
+    var(--navbar-bg-start),
+    var(--navbar-bg-end)
+  );
+  position: sticky; /* Keeps it fixed at the top */
+  top: 0; /* Sticks to the very top */
+  z-index: 100; /* Ensures it's above other content */
+  box-shadow: var(--shadow-md); /* Apply a subtle shadow */
+  width: 100%; /* Ensure it spans full width */
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: var(--navbar-height); /* Use the defined navbar height */
+  max-width: 1200px; /* This limits content *inside* the navbar, not the navbar itself */
+  margin: 0 auto; /* Center content within navbar */
+  padding: 0 var(--spacing-md); /* Horizontal padding */
+}
+
+/* --- Logo Section --- */
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  color: var(--navbar-text-light); /* Off-white for logo text */
+  font-size: 1.6rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.navbar-logo:hover {
+  color: var(
+    --navbar-accent
+  ); /* Logo highlights with a brighter purple/magenta on hover */
+}
+
+.movie-icon {
+  margin-right: 0.6rem;
+  font-size: 2rem;
+  color: var(
+    --navbar-accent
+  ); /* Icon uses accent color (brighter purple/magenta) */
+}
+
+.logo-text {
+  font-family: var(--font-family-sans);
+  letter-spacing: 0.05em;
+}
+
+/* --- Navigation Menu --- */
+.nav-menu {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  gap: var(--spacing-md);
+  margin: 0;
+  padding: 0;
+}
+
+.nav-item {
+  height: var(--navbar-height); /* Match navbar height */
+  display: flex;
+  align-items: center;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  height: 100%;
+  padding: 0 var(--spacing-sm);
+  color: var(--navbar-text-light); /* Off-white for links */
+  font-size: 1.05rem;
+  font-weight: 500;
+  transition: all var(--transition-fast);
+  border-bottom: 3px solid transparent;
+}
+
+.nav-link:hover {
+  color: var(--color-accent); /* Netflix Red on hover */
+  border-bottom: 3px solid var(--color-accent); /* Netflix Red border */
+}
+
+.nav-link.active {
+  color: var(--color-accent); /* Active link is Netflix Red */
+  border-bottom: 3px solid var(--color-accent); /* Active border also Netflix Red */
+}
+
+.nav-icon {
+  margin-right: 0.4rem;
+  font-size: 1.2rem;
+}
+
+/* --- Mobile Menu Icon --- */
+.menu-icon {
+  display: none;
+  color: var(--navbar-text-light);
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+
+/* Mobile styles */
+@media screen and (max-width: 768px) {
+  .menu-icon {
+    display: block;
+  }
+
+  .nav-menu {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: calc(100vh - var(--navbar-height));
+    position: absolute;
+    top: var(--navbar-height);
+    left: -100%;
+    opacity: 0;
+    transition: all 0.5s ease;
+    gap: 0;
+  }
+
+  .nav-menu.active {
+    background-color: var(
+      --navbar-bg-start
+    ); /* Use the start color for mobile background */
+    left: 0;
+    opacity: 1;
+    transition: all 0.5s ease;
+    z-index: 99;
+  }
+
+  .nav-item {
+    height: 60px;
+    width: 100%;
+    border-bottom: 1px solid var(--navbar-border-mobile); /* Use the new mobile border variable */
+  }
+
+  .nav-link {
+    text-align: center;
+    padding: 1.5rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav-link.active {
+    border-bottom: none;
+    background-color: var(
+      --navbar-accent
+    ); /* Mobile active can stay purple if preferred */
+    color: var(--navbar-text-light);
+  }
+}

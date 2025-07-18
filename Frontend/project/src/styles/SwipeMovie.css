@@ -1,0 +1,260 @@
+/* src/styles/SwipeMovie.css */
+
+/* --- Main Swipe Container --- */
+.swipe-container {
+  display: flex;
+  flex-direction: row; /* For placing arrows next to card */
+  align-items: center; /* Vertically centers the items (card and buttons) */
+  justify-content: center; /* Centers the whole setup horizontally */
+  width: 100%;
+  position: relative;
+  /* ADDED: Background color as per preference */
+  background-color: var(--color-primary-dark); /* Very dark background */
+  box-sizing: border-box;
+  flex-grow: 1; /* Allow it to grow to fill space inside .movie-frame-inner */
+  min-height: 0; /* IMPORTANT: Allow it to shrink */
+  /* REMOVED: max-height calc here. Let content determine its height. */
+  /* REMOVED: overflow-y: auto; - The movie-frame-inner already has this. */
+  padding-left: 0;
+  padding-right: 0;
+}
+/* --- Swipe Area (Where cards are stacked) --- */
+
+.swipe-area {
+  position: relative;
+  width: 100%;
+  max-width: 300px; /* Still the max width for the card (or no-movies placeholder) */
+  padding-bottom: 150%; /* Aspect ratio for movie card */
+  height: 0; /* Keep this for aspect ratio trick */
+  display: flex;
+  justify-content: center; /* Center content horizontally within swipe-area */
+  align-items: center; /* Center content vertically within swipe-area */
+  margin: 0; /* Removed margin-bottom */
+  flex-grow: 0; /* MODIFIED: Prevent swipe-area from growing excessively,
+                   let its aspect ratio define its size */
+  flex-shrink: 0; /* Prevent it from shrinking */
+  /* Crucial to clip content to the aspect ratio box */
+}
+
+/* --- Individual Swipe Card (Wrapper for MovieCard) --- */
+.swipe-card {
+  position: absolute; /* MODIFICATION: Make it absolute within .swipe-area */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; /* Fill the absolutely positioned swipe-area */
+  /* No changes to TinderCard transforms for swipe. */
+  display: flex; /* Make swipe-card a flex container for MovieCard */
+  justify-content: center; /* Center MovieCard horizontally */
+  align-items: center; /* Center MovieCard vertically */
+}
+
+/* --- Swipe Buttons Container (Left/Right arrows) --- */
+.swipe-buttons {
+  position: absolute;
+  top: 50%;
+  left: 50%; /* Center horizontally relative to its parent (.swipe-container) */
+  transform: translate(
+    -50%,
+    -50%
+  ); /* Adjust for perfect horizontal and vertical centering */
+
+  width: 500px;
+
+  display: flex;
+  justify-content: space-between; /* This will push the buttons to the ends of *this* wider container */
+  padding: 0; /* No internal padding for this container */
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Hide default buttons, create new arrow buttons */
+.swipe-button {
+  background-color: transparent; /* No background */
+  border: none; /* No border */
+  color: white; /* White arrow */
+  font-size: 2.5rem; /* Large arrow size */
+  padding: var(--spacing-sm);
+  cursor: pointer;
+  z-index: 11;
+  pointer-events: auto;
+  transition: transform var(--transition-fast), color var(--transition-fast);
+  border-radius: 50%; /* Make it circular */
+  width: var(--spacing-xl); /* Fixed width for circle */
+  height: var(--spacing-xl); /* Fixed height for circle */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.4); /* Subtle shadow for visibility */
+
+  /* IMPORTANT: Remove any explicit margins here.
+     `justify-content: space-between` on the parent (`.swipe-buttons`)
+     will handle their spacing within that wider container. */
+}
+
+.swipe-button:hover:not(:disabled) {
+  color: var(--color-accent); /* Netflix Red on hover for arrows */
+  transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
+.swipe-button:disabled {
+  opacity: 0.3; /* More transparent when disabled */
+  cursor: not-allowed;
+  transform: none;
+}
+
+.swipe-button svg {
+  margin: 0; /* Remove margin from icon */
+}
+
+/* --- Swipe Info (e.g., "Last swipe: ...") --- */
+.swipe-info {
+  position: absolute;
+  bottom: -40px; /* Adjusted position below buttons/instructions */
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-style: italic;
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+}
+
+/* --- No Movies Message --- */
+
+/* --- No Movies Message --- */
+.no-movies {
+  text-align: center;
+  /* Keep card background for consistent look */
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-md);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* ADDED: Subtle border for better visual separation */
+  border: 1px solid var(--card-outline-color);
+}
+
+/* .no-movies h2,
+.no-movies p {
+  position: relative;
+  z-index: 1;
+  color: inherit;
+} */
+
+.no-movies h2 {
+  font-family: var(--font-family-sans);
+  font-size: 1.8rem;
+  /* MODIFIED: Softer color for "No more Movies!" heading */
+  color: var(--color-text-secondary); /* Use muted text color */
+  margin-bottom: var(--spacing-sm);
+  text-shadow: none; /* Remove text shadow for cleaner look */
+}
+
+.no-movies p {
+  font-size: 1.1rem;
+  line-height: 1.5;
+  /* MODIFIED: Consistent light text color */
+  color: var(--color-text-light); /* Use light text color */
+}
+
+/* --- Animation states (DO NOT TOUCH!) --- */
+/* .swipe-card.swiping-right .movie-card {
+  animation: pageTurn 0.5s forwards;
+}
+
+.swipe-card.swiping-left .movie-card {
+  animation: pageTear 0.5s forwards;
+} */
+
+/* @keyframes pageTurn {
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(-180deg);
+  }
+} */
+
+/* @keyframes pageTear {
+  0% {
+    transform: rotate(0deg);
+    filter: brightness(1);
+  }
+  50% {
+    transform: rotate(-5deg) translate(-10%, 2%);
+    filter: brightness(0.9);
+    clip-path: polygon(0% 0%, 80% 0%, 90% 100%, 0% 100%);
+  }
+  100% {
+    transform: rotate(-15deg) translate(-30%, 5%);
+    filter: brightness(0.7);
+    clip-path: polygon(0% 0%, 30% 0%, 60% 100%, 0% 100%);
+    opacity: 0;
+  }
+} */
+
+/* --- Responsive adjustments --- */
+/* @media (max-width: 768px) {
+  .swipe-area {
+    height: 500px; 
+  }
+  .swipe-buttons {
+    padding: 0 var(--spacing-sm); 
+  }
+  .swipe-button {
+    font-size: 1rem;
+    max-width: 160px;
+  }
+  .swipe-instructions {
+    max-width: 350px;
+  }
+  .no-movies {
+    height: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .swipe-area {
+    height: 450px; 
+  }
+
+  .swipe-buttons {
+    margin-bottom: var(--spacing-sm);
+    flex-direction: column; 
+    align-items: center;
+    gap: var(--spacing-sm); 
+  }
+
+  .swipe-button {
+    font-size: 0.95rem;
+    padding: var(--spacing-xs) var(--spacing-md);
+    width: 90%; 
+    max-width: 250px; 
+  }
+
+  .swipe-instructions {
+    font-size: 0.85rem;
+    padding: 0 var(--spacing-xs);
+    max-width: 95%;
+  }
+  .swipe-arrow {
+    font-size: 1.4rem;
+  }
+  .swipe-info {
+    font-size: 0.9rem;
+    bottom: -30px;
+  }
+  .no-movies h2 {
+    font-size: 1.6rem;
+  }
+  .no-movies p {
+    font-size: 1rem;
+  }
+} */

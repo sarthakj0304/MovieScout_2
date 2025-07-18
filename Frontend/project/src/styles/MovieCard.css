@@ -1,0 +1,234 @@
+/* src/styles/MovieCard.css */
+
+.movie-card {
+  position: absolute; /* MODIFIED: Set to absolute to fill its parent .swipe-card/.swipe-area */
+  top: 0;
+  left: 0;
+  width: 100%; /* MODIFIED: Take full width of its parent (.swipe-area's aspect ratio box) */
+  height: 100%; /* MODIFIED: Take full height of its parent (.swipe-area's aspect ratio box) */
+  background-color: #0d0d0d;
+  /* REMOVED: max-width: 420px; and height: 600px;
+     These were the primary conflicts with .swipe-area's aspect ratio sizing.
+     The sizing is now dictated by .swipe-area's max-width and padding-bottom. */
+  /* margin: 0 auto; - Not needed here due to position: absolute */
+
+  perspective: 2000px; /* For 3D effects, if any */
+  transition: transform var(--transition-normal);
+  will-change: transform; /* Hint to browser for performance */
+
+  border: 1px solid var(--card-outline-color);
+  border-radius: var(--border-radius-md);
+  overflow: hidden; /* Ensure content respects border-radius and outline */
+  background-color: var(
+    --color-card-bg
+  ); /* ADDED: Apply background here for visibility */
+}
+
+/* --- Card Inner (Actual Visual Card) --- */
+.movie-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  /* REMOVED: background-color from here, moved to .movie-card for consistency */
+  transform-style: preserve-3d;
+  display: flex;
+  flex-direction: column; /* Stack children (cover, content) vertically */
+}
+
+/* --- Movie Poster Section --- */
+.movie-cover {
+  position: relative;
+  width: 100%;
+  /* MODIFIED: Define poster aspect ratio here. Assuming 2:3 ratio for posters. */
+  /* This means height is 1.5 times the width.
+     We need to set a fixed height or a padding-bottom trick for the aspect ratio.
+     Let's use flex-grow with a min-height based on percentage or viewport. */
+  flex-grow: 1; /* Allow the poster to take up available space */
+  /* This creates a 2:3 aspect ratio area for the poster, if the card's width is known. */
+  /* For a 2:3 ratio within the card, if the card fills its parent, it will be 100% width. */
+  /* Let's use flex-basis for initial size and allow flex-grow */
+  flex-basis: 70%; /* MODIFIED: Give movie-cover more vertical space initially */
+  min-height: 0; /* Allow it to shrink if needed, but flex-grow will make it expand */
+
+  display: flex; /* ADDED: To center image if it doesn't fill */
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Critical for cropping poster within its bounds */
+  border-bottom: 1px solid var(--color-neutral-dark);
+}
+
+.movie-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures image covers the area without distortion */
+  object-position: center;
+  transition: transform var(--transition-normal);
+}
+
+.movie-card:hover .movie-image {
+  transform: scale(1.03);
+}
+
+.movie-cover-overlay {
+  display: none; /* Keep hidden as it's not used for simple display */
+}
+
+/* --- Movie Details Section (Title and Genres at bottom) --- */
+.movie-content {
+  position: relative;
+  padding: var(--spacing-md);
+  background-color: var(--color-card-bg);
+  backdrop-filter: blur(2px);
+  border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);
+  z-index: 1;
+  flex-shrink: 0; /* MODIFIED: Prevent this section from shrinking */
+  /* min-height: 150px; - Let content dictate this, but good as a fallback */
+  overflow-y: auto; /* Enable scrolling for content if it overflows */
+  text-align: center;
+  color: var(--color-text-light);
+  margin-top: auto;
+  flex-shrink: 0;
+
+  /* ADDITION: Make it stick to the bottom */
+  margin-top: auto; /* Pushes movie-content to the bottom when in flex-direction: column */
+}
+
+.movie-title {
+  font-family: var(--font-family-sans);
+  font-size: 1.85rem;
+  font-weight: 700;
+  margin-bottom: var(--spacing-xs);
+  color: var(--color-text-light);
+  line-height: 1.2;
+}
+
+/* --- Genre Tags --- */
+.movie-genres {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.genre-tag {
+  background-color: var(--color-neutral-dark);
+  color: var(--color-text-secondary);
+  padding: 6px 14px;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  white-space: nowrap;
+  border: 1px solid var(--color-neutral-dark);
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.genre-tag:hover {
+  background-color: var(--color-accent);
+  color: #fff;
+}
+
+/* --- Removed Movie-specific elements (keep display: none) --- */
+.movie-author,
+.movie-rating,
+.star,
+.star.filled,
+.star.half-filled,
+.rating-number,
+.movie-description {
+  display: none;
+}
+
+/* --- Movie Edge (if you want to keep the "Movie spine" effect) --- */
+.movie-edge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 15px;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    var(--color-primary-dark),
+    var(--color-card-bg)
+  );
+  transform: rotateY(90deg) translateZ(7.5px) translateX(7.5px);
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.6);
+}
+
+/* --- Animation States (DO NOT TOUCH THESE KEYFRAMES!) --- */
+.movie-card.swiping-right {
+  animation: swipeRight 0.5s forwards;
+}
+
+.movie-card.swiping-left {
+  animation: swipeLeft 0.5s forwards;
+}
+
+@keyframes swipeRight {
+  0% {
+    transform: translateX(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(200%) rotate(20deg);
+    opacity: 0;
+  }
+}
+
+@keyframes swipeLeft {
+  0% {
+    transform: translateX(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-200%) rotate(-20deg);
+    opacity: 0;
+  }
+}
+
+/* --- Responsive Adjustments --- */
+/* @media (max-width: 768px) {
+  
+  .movie-card {
+    height: 550px;
+    max-width: 380px;
+  }
+
+  
+  .movie-content {
+    padding: var(--spacing-sm);
+  }
+
+  
+  .movie-title {
+    font-size: 1.6rem;
+  }
+
+  .genre-tag {
+    font-size: 0.8rem;
+    padding: 5px 10px;
+  }
+}
+
+@media (max-width: 480px) {
+ 
+  .movie-card {
+    height: 500px;
+    width: 95vw;
+    max-width: none;
+  }
+
+  
+  .movie-content {
+    padding: var(--spacing-sm);
+  }
+
+  
+  .movie-title {
+    font-size: 1.4rem;
+  }
+} */

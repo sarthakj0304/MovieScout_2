@@ -1,0 +1,316 @@
+/* src/styles/LikedMovies.css */
+
+/* Define the pure black and associated colors */
+:root {
+  --transition-normal: 0.3s ease-out;
+  --transition-fast: 0.15s ease-in-out;
+  --border-radius-md: 12px;
+  --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.4); /* Darker shadow */
+  --shadow-lg: 0px 15px 30px rgba(0, 0, 0, 0.6); /* Even darker shadow */
+
+  --color-pure-black: #000000; /* New: Pure black */
+  --color-dark-grey: #1a1a1a; /* New: Very dark grey for card backgrounds/accents */
+  --color-medium-grey: #333333; /* New: Slightly lighter dark grey */
+  --color-light-grey-text: #b0b0b0; /* New: Lighter grey for secondary text */
+
+  --color-accent: #e50914; /* Netflix red */
+  --color-text-light: #f5f5f5; /* Our primary light text color */
+  --color-text-secondary: #aaaaaa; /* Softer text color */
+  --color-error: #dc3545; /* Red for remove button */
+  --color-error-rgb: 220, 53, 69; /* For rgba */
+
+  --spacing-xs: 8px;
+  --spacing-sm: 16px;
+  --spacing-md: 24px;
+  --spacing-lg: 40px;
+  --font-family-sans: "Helvetica Neue", Arial, sans-serif;
+
+  /* Assuming these are defined in App.css :root. Re-define if not. */
+  --navbar-height: 70px; /* Example, use actual value if different */
+  --card-outline-color: #333333; /* Example, use value from App.css */
+}
+
+/* --- Main Container --- */
+.liked-movies-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* Will be centered by App.css .content */
+  flex: 1;
+  padding: var(--spacing-md);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity var(--transition-normal),
+    transform var(--transition-normal);
+  width: 100%;
+  box-sizing: border-box;
+  min-height: calc(
+    100vh - var(--navbar-height)
+  ); /* Ensure it fills remaining viewport */
+  background-color: var(--color-pure-black); /* Apply pure black background */
+  color: var(--color-text-light); /* Default text color for the page */
+}
+
+.liked-movies-container.loaded {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.liked-movies-content-wrapper {
+  width: 100%;
+  max-width: 1200px; /* Standard content width */
+  padding: var(--spacing-md); /* Internal padding for wrapper */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* --- Page Title and Subtitle --- */
+.page-title {
+  font-family: var(--font-family-sans);
+  font-size: 2.8rem; /* Consistent with Home page title */
+  color: var(--color-text-light); /* Bright white for titles */
+  margin-bottom: var(--spacing-xs);
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); /* Subtle shadow for depth */
+}
+
+.page-subtitle {
+  font-size: 1.1rem;
+  color: var(--color-text-secondary); /* Softer grey for subtitles */
+  margin-bottom: var(--spacing-lg); /* More space below subtitle */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.heart-icon {
+  color: var(--color-accent); /* Netflix red for the heart */
+  margin-right: var(--spacing-xs);
+  font-size: 1.2rem;
+}
+
+/* --- No Movies Message --- */
+.no-movies-message {
+  text-align: center;
+  padding: var(--spacing-lg);
+  margin-top: var(--spacing-md);
+  background-color: var(--color-dark-grey); /* Dark grey background */
+  border-radius: var(--border-radius-md);
+  border: 1px dashed var(--color-medium-grey); /* Subtle dashed border */
+  color: var(--color-text-secondary); /* Softer text color */
+  font-size: 1.2rem; /* Slightly larger text */
+  line-height: 1.6;
+  max-width: 500px; /* Constrain width for readability */
+  box-shadow: var(--shadow-md);
+}
+
+.no-movies-message p:first-child {
+  font-weight: 600; /* Make first line slightly bolder */
+  color: var(--color-text-light); /* Make it more prominent */
+  margin-bottom: var(--spacing-xs);
+}
+
+/* --- Liked Movies Grid --- */
+.liked-movies-grid {
+  display: grid;
+  /* Adjust minmax for a better poster layout. Aim for 3-5 columns on large screens. */
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(220px, 1fr)
+  ); /* Larger min size for cards */
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
+  width: 100%;
+  max-width: 1200px; /* Ensures grid takes full width of content wrapper */
+}
+
+/* --- Liked Movie Card --- */
+.liked-movie-card {
+  background-color: var(--color-dark-grey); /* Dark grey background */
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  transition: transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-medium-grey); /* Subtle border for definition */
+}
+
+.liked-movie-card:hover {
+  transform: translateY(-8px); /* More pronounced lift on hover */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4); /* Darker shadow on hover */
+}
+
+/* --- Movie Image Container --- */
+.movie-image-container {
+  position: relative;
+  /* Use aspect ratio trick for consistent image height, assuming 2:3 poster aspect */
+  padding-bottom: 150%; /* For 2:3 aspect ratio (height is 1.5x width) */
+  height: 0;
+  width: 100%;
+  overflow: hidden;
+  background-color: var(
+    --color-pure-black
+  ); /* Pure black background for missing images */
+}
+
+.liked-movie-image {
+  position: absolute; /* Fill the aspect ratio container */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.2s ease-in-out;
+}
+
+.liked-movie-card:hover .liked-movie-image {
+  transform: scale(1.08); /* More pronounced zoom on hover */
+}
+
+/* --- Movie Details --- */
+.liked-movie-details {
+  padding: var(--spacing-sm);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+  background-color: var(
+    --color-dark-grey
+  ); /* Consistent background for details */
+  border-top: 1px solid var(--color-medium-grey); /* Separator line */
+}
+
+.liked-movie-title {
+  font-family: var(--font-family-sans);
+  font-size: 1.25rem; /* Slightly larger and more impactful title */
+  font-weight: 700; /* Bolder */
+  margin-bottom: var(--spacing-xs);
+  color: var(--color-text-light); /* Bright white title */
+  line-height: 1.3;
+}
+
+/* --- Genre Tags --- */
+.liked-movie-genres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px; /* Slightly larger gap */
+  margin-top: var(--spacing-xs);
+  margin-bottom: var(--spacing-sm);
+}
+
+.genre-tag {
+  background-color: var(--color-medium-grey); /* Darker background for tags */
+  color: var(--color-light-grey-text); /* Lighter grey for tag text */
+  padding: 6px 14px; /* More padding */
+  border-radius: 20px; /* More rounded */
+  font-size: 0.85rem; /* Slightly larger font for tags */
+  white-space: nowrap;
+  border: 1px solid var(--color-dark-grey); /* Border that blends */
+}
+
+/* --- Remove Button --- */
+.remove-button {
+  position: absolute;
+  top: var(--spacing-sm); /* Slightly further from top edge */
+  right: var(--spacing-sm); /* Slightly further from right edge */
+  background-color: rgba(
+    var(--color-error-rgb, 220, 53, 69),
+    0.9
+  ); /* Slightly less transparent */
+  color: white;
+  border: 2px solid white; /* White border for contrast */
+  border-radius: 50%;
+  width: 40px; /* Larger button */
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--transition-fast), transform var(--transition-fast),
+    background-color var(--transition-fast), border-color var(--transition-fast);
+  z-index: 3;
+  font-size: 1.2rem; /* Larger icon */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+}
+
+.movie-image-container:hover .remove-button {
+  opacity: 1;
+}
+
+.remove-button:hover {
+  background-color: var(--color-accent); /* Use accent red on hover */
+  transform: scale(1.15); /* More pronounced scale */
+  border-color: var(--color-text-light); /* White border on hover */
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+  .liked-movies-grid {
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(180px, 1fr)
+    ); /* Smaller cards on tablets */
+    gap: var(--spacing-md);
+  }
+
+  .page-title {
+    font-size: 2.2rem;
+  }
+
+  .page-subtitle {
+    font-size: 1rem;
+    margin-bottom: var(--spacing-md);
+  }
+
+  .liked-movie-title {
+    font-size: 1.1rem;
+  }
+
+  .remove-button {
+    width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .liked-movies-grid {
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(150px, 1fr)
+    ); /* Even smaller for phones */
+    gap: var(--spacing-sm);
+  }
+
+  .liked-movies-container {
+    padding: var(--spacing-sm);
+  }
+
+  .liked-movies-content-wrapper {
+    padding: var(--spacing-sm);
+  }
+
+  .page-title {
+    font-size: 1.8rem;
+  }
+
+  .page-subtitle {
+    font-size: 0.9rem;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .no-movies-message {
+    padding: var(--spacing-md);
+    font-size: 1rem;
+  }
+}
+
+/* Removed all display: none for .Movie-frame elements from LikedMovies.css */
+/* They are removed from JSX directly */

@@ -1,0 +1,72 @@
+/* src/styles/index.css */
+
+/* Global Reset and Box-Sizing */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Base HTML and Body Styles - Set overall dark theme here */
+html {
+  font-size: 16px; /* Base font size for rem units */
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh; /* Ensure the body takes at least the full viewport height */
+
+  /* Set the overall black background for the entire application */
+  background-color: #0d0d0d; /* Very dark almost black */
+  color: #f5f5f5; /* Default light text color for the entire app */
+
+  /* Default font for the entire application */
+  font-family: "Helvetica Neue", Arial, sans-serif; /* Using a clean sans-serif */
+  line-height: 1.6;
+  font-weight: 400;
+
+  /* Performance and rendering optimizations */
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Generic Link Styles (will be overridden by component-specific ones) */
+a {
+  font-weight: 500;
+  color: inherit; /* Inherit color unless specified by a component */
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: #ccc;
+}
+
+/* Generic Button Styles (will be overridden by component-specific ones) */
+button {
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  background-color: transparent;
+  color: inherit;
+  border-radius: 4px;
+}
+
+button:focus,
+button:focus-visible {
+  outline: 2px solid #646cff;
+  outline-offset: 2px;
+}
+
+/* Responsive adjustment for base font size on smaller screens */
+@media (max-width: 640px) {
+  html {
+    font-size: 15px; /* Slightly smaller base font on mobile */
+  }
+}

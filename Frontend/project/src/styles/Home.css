@@ -1,0 +1,111 @@
+/* --- Home Container --- */
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Keep this to center the movie-frame */
+  flex: 1; /* flex-grow: 1, flex-shrink: 1, flex-basis: 0% */
+  padding: var(--spacing-md);
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 0; /* IMPORTANT: Allow it to shrink if necessary within flex context */
+}
+
+/* --- Movie Frame (Wrapper for title, subtitle, and SwipeMovie) --- */
+
+/* --- Movie Frame (Wrapper for title, subtitle, and SwipeMovie) --- */
+.movie-frame {
+  position: relative;
+  width: 100%;
+  max-width: var(--card-max-width);
+  margin: var(--spacing-lg) auto var(--spacing-xl) auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0;
+  flex-grow: 1; /* Allow it to take up available vertical space */
+  min-height: 0; /* IMPORTANT: Allow it to shrink if necessary within flex context */
+  /* REMOVED: max-height calc here. Let the flex items inside it determine its height.
+     If content overflows, the movie-frame-inner's overflow:auto will kick in. */
+  /* overflow-y: auto; - Removed from here, moved to .movie-frame-inner for specific scrolling */
+}
+
+.movie-frame-inner {
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  z-index: 1;
+  border: 1px solid var(--card-outline-color);
+  flex-grow: 1;
+  min-height: 0; /* IMPORTANT: Allow it to shrink */
+  width: 100%;
+  box-sizing: border-box;
+  overflow: visible; /* Keep this for internal scrolling if content is too tall */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  max-height: 100%; /* Keep this to constrain it within its parent's height */
+}
+
+/* Removed Movie-frame-top and Movie-frame-bottom */
+
+.movie-frame-top,
+.movie-frame-bottom {
+  display: none; /* Hide these elements if they are still in HTML */
+}
+
+/* --- Page Title and Subtitle --- */
+
+/* --- Page Title --- */
+h1.page-title {
+  text-align: center;
+  margin-bottom: var(--spacing-sm);
+  font-family: var(--font-family-sans);
+  font-size: 2.8rem;
+  /* FIX: Corrected variable name for desired light text color */
+  color: var(
+    --color-text-light
+  ); /* Use the correct light text color variable */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+  position: relative;
+  z-index: 1;
+  /* ADDED: Some margin to ensure it's not crammed against the top of .movie-frame-inner */
+  margin-top: var(--spacing-md);
+}
+
+/* Removed subtitle as per request */
+
+p.page-subtitle {
+  /* Ensure JSX doesn't render this or has display: none */
+
+  display: none; /* Hide the subtitle if it's rendered */
+}
+
+/* Responsive adjustments */
+
+@media (max-width: 640px) {
+  .home-container {
+    padding: var(--spacing-sm);
+  }
+
+  .movie-frame {
+    margin: var(--spacing-md) auto;
+
+    max-width: 95%; /* Adjust max-width for mobile */
+  }
+
+  .movie-frame-inner {
+    padding: var(--spacing-md);
+
+    /* No complex max-height calc needed if flex-grow: 1 handles it */
+
+    min-height: 300px; /* Adjust min-height for mobile */
+  }
+
+  h1.page-title {
+    font-size: 2.2rem;
+  }
+}

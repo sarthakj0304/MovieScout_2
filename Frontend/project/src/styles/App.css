@@ -1,0 +1,105 @@
+/* src/styles/App.css */
+
+/* --- GLOBAL CSS VARIABLES (THE ONLY :root BLOCK IN YOUR PROJECT) --- */
+:root {
+  /* Transitions and Shadows */
+  --transition-fast: 0.15s ease-in-out;
+  --transition-normal: 0.3s ease-out;
+  --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.4); /* Darker shadow for dark theme */
+  --shadow-lg: 0px 15px 30px rgba(0, 0, 0, 0.6); /* Even darker for large elements */
+
+  /* Spacing (using rem for scalability) */
+  --spacing-xs: 0.5rem; /* 8px */
+  --spacing-sm: 1rem; /* 16px */
+  --spacing-md: 1.5rem; /* 24px */
+  --spacing-lg: 2.5rem; /* 40px */
+  --spacing-xl: 3.75rem; /* 60px */
+
+  /* Borders & Radii */
+  --border-radius-sm: 0.25rem; /* 4px */
+  --border-radius-md: 0.75rem; /* 12px */
+  --border-radius-lg: 1.875rem; /* 30px for pill-shaped buttons */
+
+  /* Typography */
+  --font-family-sans: "Helvetica Neue", Arial, sans-serif;
+  --font-family-serif: "Playfair Display", Georgia, serif;
+
+  /* Color Palette for Dark Theme */
+  --color-primary-dark: #0d0d0d; /* Overall app background (matches body) */
+  --color-card-bg: #1e1e1e; /* Slightly lighter dark for card containers */
+  --color-text-light: #f5f5f5; /* Light text on dark backgrounds */
+  --color-text-secondary: #aaaaaa; /* Muted text for secondary info */
+
+  /* Action Colors */
+  --color-success: #28a745; /* Green for like */
+  --color-error: #dc3545; /* Red for dislike */
+  --color-accent: #e50914; /* General accent color (Netflix Red) */
+
+  /* Navbar Specific Colors */
+  --navbar-bg-start: #4a148c; /* A dark purple for the gradient */
+  --navbar-bg-end: #0d0d0d; /* Black for the gradient */
+  --navbar-accent: #9c27b0; /* A brighter purple/magenta for navbar specific accents */
+  --navbar-text-light: #f5f5f5;
+  --navbar-text-dark: #e0e0e0;
+  --navbar-height: 70px; /* Define navbar height as a variable */
+  --navbar-border-mobile: rgba(
+    255,
+    255,
+    255,
+    0.1
+  ); /* For mobile menu borders */
+
+  /* Card Outline */
+  --card-outline-color: rgba(
+    255,
+    255,
+    255,
+    0.15
+  ); /* Thin white outline, slightly transparent */
+  --card-max-width: 550px; /* New: Max width for the card */
+}
+
+/* --- App Container (Main wrapper for React components) --- */
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity var(--transition-normal),
+    transform var(--transition-normal);
+}
+
+.app.loaded {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* app-container now wraps everything *except* the full-width navbar */
+.app-container {
+  width: 100%;
+  max-width: 1200px; /* Max width for your *content area* below the navbar */
+  margin: 0 auto; /* Center the content */
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Allows the content area to grow */
+}
+
+.content {
+  flex-grow: 1; /* Allows this content area to expand and take available space */
+  /* NO padding-top here anymore. Navbar is outside this flow. */
+  padding-top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center content horizontally */
+  justify-content: center; /* Align content to the top within its available space */
+  width: 100%; /* Ensure it takes full width */
+  box-sizing: border-box; /* Include padding in width/height */
+}
+
+/* Responsive adjustments for main content padding if needed */
+@media (max-width: 640px) {
+  .content {
+    padding-top: 0; /* No padding-top */
+  }
+}
