@@ -1,6 +1,17 @@
 # MovieScout
 An online tinder like interface for movie recommendation. Uses Content based and collaborative filtering to generate recommendations on the go. Built with a React frontend and a Flask backend, MovieScout delivers a smooth, personalized experience for movie lovers.
 
+## Screenshots
+### 🧑‍💻 Login Page  
+![Feed](screenshots/Login_page.png)
+
+###  Discover Movies 
+![Chat](screenshots/Discover_Movies.png)
+
+### Liked Movies
+![Connections](screenshots/Liked_movies.png)
+
+
 # Features
 
 -  User authentication (Flask backend)
